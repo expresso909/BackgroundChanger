@@ -1,0 +1,153 @@
+#Guesser
+
+JAVASCRIPT FILE - [ 
+let tukka = parseInt(Math.random () * 100 + 1);
+const submit = document.querySelector('#subt');
+const guessed = document.querySelector('#guessField');
+const guessgiven = document.querySelector('.guesses');
+const remaininglifes = document.querySelector('.lastResult');
+const smallorbig = document.querySelector('.lowOrHi');
+const newstart = document.querySelector('.resultParas');
+const para = document.createElement('p');
+
+let storedguess = []
+let newguess = 1
+
+let useronline = true ;
+
+submit.addEventListener('click', function(game) {
+  game.preventDefault(); 
+
+  if (!useronline){
+    alert('Khel Kahatam Beta! CLick "Start New Game"');
+    return;
+  }
+
+    let randi = parseInt(guessed.value)
+    console.log(randi)
+    validguess(randi)
+  });
+
+
+function validguess(randi){
+  if(isNaN(randi)) {
+    alert('Please enter a valid numer in range')
+  } else if (randi < 1){
+    alert('Please enter a number above than 1')
+  }else if (randi > 100){
+    alert('Please enter a number less than 100')
+  }else {
+    storedguess.push(randi)
+    if(newguess === 11) {
+    displayinform(randi)
+    displayyourguess(`Tera Game Baaj Gaya Beta , Asli Chor toh ${randi} tha.`);
+    Gameend()
+    }else{
+      displayinform(randi)
+      checkguess(randi)
+    }
+
+  }
+
+} // checks the input number is in range of 1 to 100
+
+function checkguess(randi){
+  if(randi === tukka){
+    displayyourguess(`Shabassh Beta Chor Pakada Gaya`)
+    Gameend()
+  }else if(randi < tukka){
+    displayyourguess(`Bada Soch`)
+  }else if(randi > tukka){
+    displayyourguess(`Aukaat me Reh Lawde`)
+  }
+} //checks input = the value to be  guessed
+
+function displayinform(randi) {
+  guessed.value= ' '
+  guessgiven.innerHTML += ` ${randi} ,`
+  newguess++;
+  remaininglifes.innerHTML = `${12 - newguess}`
+
+} // to make changes in dom ( make changes in no. of lifes left, numbers guessed, clear the input box, )
+
+function displayyourguess(message){
+  smallorbig.innerHTML = `<h2>${message}</h2>`
+
+} // displays the guess made is small or high the the value to be guessed
+
+
+
+function Gameend () {
+useronline = false;
+guessed.value = ''
+guessed.setAttribute('disabled', '')
+para.classList.add('button')
+para.innerHTML = `<h2 id="Gamereload">Start New Game</h2>`
+newstart.appendChild(para);
+
+Gamereload();
+
+} //to end the game
+
+function Gamereload () {
+  const naya = document.querySelector('#Gamereload');
+  naya.addEventListener('click', function (){
+    tukka = parseInt(Math.random () * 100 + 1);
+    storedguess = [];
+    newguess = 1;
+    useronline = true;
+    guessgiven.innerHTML = ''
+    remaininglifes.innerHTML = `10` ;
+    smallorbig.innerHTML = '';
+    guessed.removeAttribute('disabled')
+    guessed.value ='';
+    newstart.removeChild(para);
+
+        
+  })
+  
+} //to restart the game
+]
+
+
+HTML FILE - [
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body style="background-color:#212121; color:#fff;">
+  <nav>
+    <a href="/" aria-current="page">Home</a>
+    <a target="_blank" href="https://www.youtube.com/@chaiaurcode"
+      >Youtube channel</a
+    >
+  </nav>
+    
+    <div id="wrapper">
+      <h1>Number guessing game</h1>
+    <p>Try and guess a random number between 1 and 100.</p>
+    <p>You have 10 attempts to guess the right number.</p>
+    </br>
+        <form class="form">
+            <label2 for="guessField" id="guess">Guess a number</label>
+            <input type="text" id="guessField" class="guessField">
+            <input type="submit" id="subt" value="Submit guess" class="guessSubmit">
+        </form>
+
+        <div class="resultParas">
+            <p >Previous Guesses: <span class="guesses"></span></p>
+            <p >Guesses Remaining: <span class="lastResult">10</span></p>
+            <p class="lowOrHi"></p>
+        </div>
+    </div>
+    <script src="chaiaurcode.js"></script>
+</body>
+</html>
+}
