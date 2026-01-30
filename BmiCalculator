@@ -110,6 +110,19 @@ form.addEventListener('submit', function (e) {
   }
 
   const bmi = (weight / ((height / 100) ** 2)).toFixed(2);
-  results.textContent = `Your BMI is ${bmi}`;
+  let status = '';
+
+  if (bmi < 18.5) {
+    status = 'Underweight';
+  } else if (bmi >= 18.5 && bmi < 25) {
+    status = 'Normal weight';
+  } else if (bmi >= 25 && bmi < 30) {
+    status = 'Overweight';
+  } else {
+    status = 'Obese';
+  }
+
+  results.textContent = `Your BMI is ${bmi} (${status})`;
 });
+
 ]
